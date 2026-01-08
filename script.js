@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ------------------------------------------------
-    // Hero Parallax & General Parallax Logic
+    // Hero Parallax & Fade Effect (かっこいいスクロール演出)
     // ------------------------------------------------
     const heroSection = document.getElementById('hero-section');
     const heroBg = document.getElementById('hero-bg-wrapper');
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const parallaxElements = document.querySelectorAll('.parallax-y');
 
     // ------------------------------------------------
-    // Header Background on Scroll & Animation Loop
+    // Header Background on Scroll & Hero Animation Loop
     // ------------------------------------------------
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
@@ -105,39 +105,40 @@ document.addEventListener('DOMContentLoaded', function() {
         // Header Shadow Logic
         if (header) {
             if (scrollY > 50) {
-                header.classList.add('shadow-sm', 'bg-white/80');
+                header.classList.add('shadow-sm');
+                header.classList.add('bg-white/80');
                 header.classList.remove('bg-white/0');
             } else {
-                header.classList.remove('shadow-sm', 'bg-white/80');
+                header.classList.remove('shadow-sm');
+                header.classList.remove('bg-white/80');
                 header.classList.add('bg-white/0');
             }
         }
 
-        // 1. Hero Section Logic (Top area specific)
+        // Hero Parallax Logic
         if (heroSection && heroBg && heroText) {
             const heroHeight = heroSection.offsetHeight;
             
+            // ヒーローセクションが見えている範囲内でのみ計算（負荷軽減）
             if (scrollY <= heroHeight) {
-                // 背景: ゆっくり下に移動
+                // 背景: ゆっくりスクロール(0.4倍速) + フェードアウト + ズームイン
                 const bgTranslate = scrollY * 0.4; 
-                // 透明度: スクロールにつれて薄く
-                const bgOpacity = 1 - (scrollY / (heroHeight * 0.9)); 
-                // 拡大: 少しずつズーム
-                const scale = 1 + (scrollY / (heroHeight * 4)); 
+                const bgOpacity = 1 - (scrollY / (heroHeight * 0.8)); // 8割スクロールで透明に
+                const scale = 1 + (scrollY / (heroHeight * 3)); // ほんのり拡大
 
                 heroBg.style.transform = `translate3d(0, ${bgTranslate}px, 0) scale(${scale})`;
                 heroBg.style.opacity = Math.max(bgOpacity, 0);
 
-                // テキスト(ロゴ): 背景より速く上に逃げる + 素早くフェードアウト
+                // テキスト: 背景より速く上に逃げる(0.6倍速) + 素早くフェードアウト
                 const textTranslate = scrollY * 0.6;
-                const textOpacity = 1 - (scrollY / (heroHeight * 0.5)); 
+                const textOpacity = 1 - (scrollY / (heroHeight * 0.5)); // 半分スクロールで透明に
 
                 heroText.style.transform = `translate3d(0, ${textTranslate}px, 0)`;
                 heroText.style.opacity = Math.max(textOpacity, 0);
             }
         }
 
-        // 2. General Parallax Elements (Works columns etc.)
+        // General Parallax Elements (Works columns etc.)
         // data-speed属性に応じて移動量を調整
         parallaxElements.forEach(el => {
             const rect = el.getBoundingClientRect();
@@ -159,10 +160,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // ------------------------------------------------
     const voiceTrack = document.getElementById('voice-track');
     if (voiceTrack) {
-        // コンテンツ量が少ない場合のために2回複製してループを滑らかに
         const clone = voiceTrack.innerHTML;
         voiceTrack.insertAdjacentHTML('beforeend', clone);
-        voiceTrack.insertAdjacentHTML('beforeend', clone);
+        voiceTrack.insertAdjacentHTML('beforeend', clone); // 長さを確保するため2回追加
         voiceTrack.classList.add('animate-marquee');
     }
 });
