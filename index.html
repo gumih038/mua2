@@ -1,41 +1,138 @@
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
-
-<!-- Tailwind CSS (via CDN) -->
-<script src="https://cdn.tailwindcss.com"></script>
-
-<!-- Custom Config for Tailwind -->
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    'mua-white': '#ffffff',
-                    'mua-gray-light': '#F8F8F8', // 背景用薄グレー
-                    'mua-gray-medium': '#E5E5E5', // 線や枠用
-                    'mua-gray-text': '#888888',   // 薄い文字
-                    'mua-black': '#333333',       // メイン文字
-                    'mua-accent': '#999999',      // アクセント
-                },
-                fontFamily: {
-                    'en': ['"Cormorant Garamond"', 'serif'],
-                    'jp': ['"Zen Kaku Gothic New"', 'sans-serif'],
-                },
-                letterSpacing: {
-                    'widest-plus': '0.15em',
-                },
-                dropShadow: {
-                    'glow': '0 0 10px rgba(255, 255, 255, 0.5)',
-                    'heavy': '0 4px 6px rgba(0, 0, 0, 0.5)',
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUA | Private Nail Salon</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (via CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Config for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mua-white': '#ffffff',
+                        'mua-gray-light': '#F8F8F8',
+                        'mua-gray-medium': '#E5E5E5',
+                        'mua-gray-text': '#888888',
+                        'mua-black': '#333333',
+                        'mua-accent': '#999999',
+                    },
+                    fontFamily: {
+                        'en': ['"Cormorant Garamond"', 'serif'],
+                        'jp': ['"Zen Kaku Gothic New"', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        'widest-plus': '0.15em',
+                    },
+                    dropShadow: {
+                        'glow': '0 0 10px rgba(255, 255, 255, 0.5)',
+                        'heavy': '0 4px 6px rgba(0, 0, 0, 0.5)',
+                    }
                 }
             }
         }
-    }
-</script>
+    </script>
 
-<div class="mua-lp-wrapper bg-white relative font-jp text-mua-black antialiased overflow-hidden">
+    <style>
+        /* -------------------------------------------
+           カスタムCSS (ここにCSSを統合)
+           ------------------------------------------- */
+        body {
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            color: #333;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* アニメーション関連 */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (min-width: 768px) {
+            .hover-zoom {
+                overflow: hidden;
+            }
+            .hover-zoom img {
+                transition: transform 0.6s ease;
+            }
+            .hover-zoom:hover img {
+                transform: scale(1.05);
+            }
+        }
+
+        /* ハンバーガーメニュー */
+        .hamburger-line {
+            transition: all 0.3s ease-in-out;
+        }
+        .nav-open .hamburger-line:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .nav-open .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        .nav-open .hamburger-line:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+        
+        /* 背景ノイズ */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.4;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+
+        /* スクロールバー非表示 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .animate-marquee {
+            animation: marquee 120s linear infinite;
+            will-change: transform;
+        }
+
+        .hover\:pause-marquee:hover {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="bg-white relative">
 
     <div class="bg-noise"></div>
 
@@ -80,23 +177,33 @@
     <!-- Hero Section -->
     <section id="hero-section" class="relative h-screen w-full overflow-hidden bg-mua-gray-light m-0 p-0">
         <div id="hero-bg-wrapper" class="absolute inset-0 will-change-transform will-change-opacity">
-            <!-- Salon Atmosphere Image -->
-            <img src="http://mua.local/wp-content/uploads/2026/01/Gemini_Generated_Image_b69xjzb69xjzb69x-scaled.png" 
+            <!-- 
+               ★重要: GitHub Pagesで公開する場合、ローカルのURL(http://mua.local/...)は表示されません。
+               画像をGitHubリポジトリにアップロードし、パスを './img/logo.png' 等に変更するか、
+               Web上のURLを指定する必要があります。現在はUnsplashを表示しています。
+            -->
+            <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?q=80&w=2070&auto=format&fit=crop" 
                  alt="MUA Atmosphere" 
                  class="w-full h-full object-cover opacity-100">
-            <!-- 若干暗くしてロゴを浮き立たせる -->
             <div class="absolute inset-0 bg-black/10"></div>
         </div>
         
         <div id="hero-text-wrapper" class="absolute inset-0 flex flex-col justify-center items-center text-center z-10 px-4 will-change-transform">
             <div class="fade-up delay-300 flex flex-col items-center">
                 <p class="font-en text-xs md:text-sm tracking-[0.4em] mb-6 text-white drop-shadow-md">Private Nail Salon</p>
-                <!-- Logo Image -->
+                
+                <!-- 
+                   ★ロゴ画像について:
+                   ここも同様にGitHubにアップロードしないと表示されません。
+                   一旦、ロゴ画像がない場合でもデザインが崩れないよう、
+                   画像タグの下にテキストロゴも入れています（画像読み込みエラー時はaltが表示されます）。
+                -->
                 <div class="w-48 md:w-80 mb-8 relative">
                     <img src="http://mua.local/wp-content/uploads/2025/12/ロゴ白.png" 
                          alt="MUA" 
-                         class="w-full h-auto drop-shadow-heavy">
+                         class="w-full h-auto drop-shadow-heavy block">
                 </div>
+
                 <p class="font-jp text-xs md:text-sm tracking-widest text-white drop-shadow-md leading-loose">
                     指先に、あなただけの魔法を。<br>
                     洗練されたプライベート空間で。
@@ -148,7 +255,7 @@
 
                 <!-- Asymmetric Grid -->
                 <div class="grid grid-cols-2 gap-6 md:gap-16">
-                    <!-- Left Column (Fast scroll or specific offset) -->
+                    <!-- Left Column -->
                     <div class="flex flex-col gap-12 md:gap-24 mt-0 parallax-y" data-speed="0.03">
                         <div class="hover-zoom aspect-[3/4] bg-white p-2 shadow-sm fade-up">
                             <img src="https://images.unsplash.com/photo-1632515904838-8e6f1577c952?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition duration-700" alt="Nail 1">
@@ -160,7 +267,7 @@
                         </div>
                     </div>
 
-                    <!-- Right Column (Slow scroll / Offset top) -->
+                    <!-- Right Column -->
                     <div class="flex flex-col gap-12 md:gap-24 mt-16 md:mt-32 parallax-y" data-speed="0.08">
                         <div class="hover-zoom aspect-[3/4] bg-white p-2 shadow-sm fade-up">
                             <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition duration-700" alt="Nail 2">
@@ -290,7 +397,6 @@
         <!-- Marquee Container -->
         <div class="w-full overflow-hidden fade-up">
             <div id="voice-track" class="flex w-max hover:pause-marquee">
-                
                 <!-- Review Card 1 -->
                 <div class="flex-none w-80 bg-white p-8 shadow-sm border border-gray-100 mx-6 flex flex-col justify-center">
                     <div class="flex justify-between items-center mb-4">
@@ -301,7 +407,6 @@
                         今月もありがとうございました！ピンク×リボンのデザイン、とてもかわいいです🎀次回もよろしくお願いいたします😌
                     </p>
                 </div>
-
                 <!-- Review Card 2 -->
                 <div class="flex-none w-80 bg-white p-8 shadow-sm border border-gray-100 mx-6 flex flex-col justify-center">
                     <div class="flex justify-between items-center mb-4">
@@ -312,7 +417,6 @@
                         いつもイメージより可愛いデザインありがとうございます！毎月可愛い手元でモチベーションが上がってます！
                     </p>
                 </div>
-
                 <!-- Review Card 3 -->
                 <div class="flex-none w-80 bg-white p-8 shadow-sm border border-gray-100 mx-6 flex flex-col justify-center">
                     <div class="flex justify-between items-center mb-4">
@@ -323,7 +427,6 @@
                         画像何枚か組み合わせてもらい、とっても可愛くなりました〜！！！ありがとうございました！
                     </p>
                 </div>
-
                 <!-- Review Card 4 -->
                 <div class="flex-none w-80 bg-white p-8 shadow-sm border border-gray-100 mx-6 flex flex-col justify-center">
                     <div class="flex justify-between items-center mb-4">
@@ -334,7 +437,6 @@
                         再現度の高さ本当にいつも最高です！また来月もよろしくお願い致します🫧
                     </p>
                 </div>
-
                 <!-- Review Card 5 -->
                 <div class="flex-none w-80 bg-white p-8 shadow-sm border border-gray-100 mx-6 flex flex-col justify-center">
                     <div class="flex justify-between items-center mb-4">
@@ -345,7 +447,6 @@
                         いつもご丁寧にありがとうございます🌼今回のネイルも大満足です！また来月もお願いいたします♩
                     </p>
                 </div>
-
             </div>
         </div>
         
@@ -432,4 +533,170 @@
         </button>
     </div>
 
-</div>
+    <!-- Scripts (ここにJSを統合) -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("MUA Script Loaded");
+
+        // ------------------------------------------------
+        // ハンバーガーメニュー制御
+        // ------------------------------------------------
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const header = document.getElementById('lp-header');
+        const body = document.body;
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        if(menuBtn && mobileMenu && header) {
+            menuBtn.addEventListener('click', () => {
+                const isOpen = header.classList.contains('nav-open');
+                if (isOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+
+            function openMenu() {
+                header.classList.add('nav-open');
+                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+                // 背景固定（スクロール防止）
+                body.style.overflow = 'hidden';
+            }
+
+            function closeMenu() {
+                header.classList.remove('nav-open');
+                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+                body.style.overflow = '';
+            }
+
+            // リンククリックでメニューを閉じる
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+        }
+
+        // ------------------------------------------------
+        // Reserve Button Popup (予約ボタン)
+        // ------------------------------------------------
+        const reserveBtn = document.getElementById('reserve-btn');
+        const reservePopup = document.getElementById('reserve-popup');
+        let isPopupOpen = false;
+
+        if(reserveBtn && reservePopup) {
+            reserveBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                isPopupOpen = !isPopupOpen;
+                if (isPopupOpen) {
+                    reservePopup.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+                } else {
+                    reservePopup.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+                }
+            });
+
+            // 画面クリックで閉じる
+            document.addEventListener('click', (e) => {
+                if (isPopupOpen && !reservePopup.contains(e.target)) {
+                    isPopupOpen = false;
+                    reservePopup.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+                }
+            });
+        }
+
+        // ------------------------------------------------
+        // Scroll Animation (Fade Up)
+        // ------------------------------------------------
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ------------------------------------------------
+        // Hero Parallax & Fade Effect
+        // ------------------------------------------------
+        const heroSection = document.getElementById('hero-section');
+        const heroBg = document.getElementById('hero-bg-wrapper');
+        const heroText = document.getElementById('hero-text-wrapper');
+        
+        // 他のパララックス要素（WorksやTitleなど）
+        const parallaxElements = document.querySelectorAll('.parallax-y');
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+
+            // Header Shadow Logic
+            if (header) {
+                if (scrollY > 50) {
+                    header.classList.add('shadow-sm', 'bg-white/80');
+                    header.classList.remove('bg-white/0');
+                } else {
+                    header.classList.remove('shadow-sm', 'bg-white/80');
+                    header.classList.add('bg-white/0');
+                }
+            }
+
+            // Hero Parallax Logic
+            if (heroSection && heroBg && heroText) {
+                const heroHeight = heroSection.offsetHeight;
+                
+                if (scrollY <= heroHeight) {
+                    // 背景: ゆっくりスクロール(0.4倍速) + フェードアウト + ズームイン
+                    const bgTranslate = scrollY * 0.4; 
+                    const bgOpacity = 1 - (scrollY / (heroHeight * 0.8)); 
+                    const scale = 1 + (scrollY / (heroHeight * 3)); 
+
+                    heroBg.style.transform = `translate3d(0, ${bgTranslate}px, 0) scale(${scale})`;
+                    heroBg.style.opacity = Math.max(bgOpacity, 0);
+
+                    // テキスト: 背景より速く上に逃げる(0.6倍速) + 素早くフェードアウト
+                    const textTranslate = scrollY * 0.6;
+                    const textOpacity = 1 - (scrollY / (heroHeight * 0.5));
+
+                    heroText.style.transform = `translate3d(0, ${textTranslate}px, 0)`;
+                    heroText.style.opacity = Math.max(textOpacity, 0);
+                }
+            }
+
+            // General Parallax Elements
+            if (parallaxElements.length > 0) {
+                parallaxElements.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    // 画面内に入りそうな範囲のみ計算
+                    if (rect.top < windowHeight && rect.bottom > 0) {
+                        const speed = parseFloat(el.getAttribute('data-speed')) || 0.05;
+                        // 簡易的に「画面内でのオフセット」を演出
+                        const offset = (windowHeight - rect.top) * speed;
+                        el.style.transform = `translate3d(0, -${offset}px, 0)`;
+                    }
+                });
+            }
+        });
+
+        // ------------------------------------------------
+        // Voice Marquee Duplication
+        // ------------------------------------------------
+        const voiceTrack = document.getElementById('voice-track');
+        if (voiceTrack) {
+            const clone = voiceTrack.innerHTML;
+            voiceTrack.insertAdjacentHTML('beforeend', clone);
+            voiceTrack.insertAdjacentHTML('beforeend', clone); 
+            voiceTrack.classList.add('animate-marquee');
+        }
+    });
+    </script>
+</body>
+</html>
